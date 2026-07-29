@@ -17,7 +17,7 @@ El taller incluye **tres ejercicios**:
 
 ## Tres “mapas trazados” para ir de una isla a otra
 
-Este taller propone tres caminos para llegar al mismo objetivo (de imagen cruda a cuantificación):
+Este taller propone tres caminos para llegar al mismo objetivo: aprender a diseñar flujos de trabajo (de imagen cruda a cuantificación):
 
 - **Fiji**: un mapa ideal para empezar con herramientas visuales clásicas, rápidas de explorar.
 - **Jupyter**: un mapa orientado a reproducibilidad, documentación y automatización con código.
