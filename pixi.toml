@@ -1,0 +1,42 @@
+[workspace]
+authors = ["Agustin Corbat <acorbat@df.uba.ar>"]
+channels = ["conda-forge"]
+name = "workshop_segmentation_quantification"
+version = "0.1.0"
+description = "Taller introductorio a análisis de bioimágenes con Napari"
+platforms = ["win-64", "linux-64", "osx-64", "osx-arm64"]
+
+[tasks]
+install-assistant = "pixi install --environment assistant"
+setup = { depends-on = ["install-assistant", "download-data"] }
+download-data = """
+curl -L https://zenodo.org/records/15175309/files/Nuclei_no_avg.nd2?download=1 --output data/nuclei.nd2 --create-dirs
+"""
+
+[feature.assistant.dependencies]
+python = "3.10.*"
+
+napari = "0.6.*"
+napari-assistant = "0.6.*"
+
+# procesamiento con scikit-image
+scikit-image = "*"
+numpy = "*"
+scipy = "*"
+
+# herramientas de segmentación compatibles con el asistente
+napari-segment-blobs-and-things-with-membranes = "*"
+
+# regionprops (medición)
+napari-skimage-regionprops = "*"
+
+# backend GUI
+pyqt = "*"
+qtpy = "*"
+magicgui = "*"
+jupytext = ">=1.19.1,<2"
+jupyterlab = ">=4.5.4,<5"
+napari-bioformats = ">=0.3.0.post0,<0.4"
+
+[environments]
+assistant = ["assistant"]
