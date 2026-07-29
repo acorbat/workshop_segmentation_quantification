@@ -2,5 +2,8 @@
 .pixi/*
 !.pixi/config.toml
 
+# jupyter notebook checkpoints
+.ipynb_checkpoints
+
 # ignore data folder
 data/*
