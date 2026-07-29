@@ -128,7 +128,7 @@ Seleccioná `Tools → Measure Tables → Object Features/Properties`. Aquí ase
 
 Al hacer doble clic en cualquiera de las columnas de esta tabla, aparecerá una nueva capa de imagen con etiquetas con código de color que indica el valor de la medición seleccionada. Los mapas de color pueden ajustarse según preferencia.
 
-![Histograma de Brillo/Contraste](assets/napari_per_area.png.png)
+![Histograma de Brillo/Contraste](assets/napari_per_area.png)
 
 <--! Esto es una buena forma de visualizar si hay valores de area que se escapan de una distribución esperada. También podemos ver sesgos en el flujo desarrollado que pueden darse por efectos espaciales de la adquisición (ej. si es más tenue en los bordes, la segmentación puede arrojar nucleos más pequeños. -->
 
