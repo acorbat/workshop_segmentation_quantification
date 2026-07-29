@@ -11,6 +11,7 @@ install-assistant = "pixi install --environment assistant"
 setup = { depends-on = ["install-assistant", "download-data"] }
 download-data = """
 curl -L https://zenodo.org/records/15175309/files/Nuclei_no_avg.nd2?download=1 --output data/nuclei.nd2 --create-dirs --skip-existing
+curl -L https://zenodo.org/records/15175309/files/Tissue_no_avg.nd2?download=1 --output data/tissue.nd2 --create-dirs --skip-existing
 """
 
 [feature.assistant.dependencies]
