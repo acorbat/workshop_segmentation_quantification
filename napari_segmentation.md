@@ -1,11 +1,11 @@
-# Guía de Segmentación 3D con Napari
+# Guía de Segmentación con Napari
 
-Esta guía práctica cubre el flujo de trabajo completo para la segmentación de imágenes 3D usando Napari y el plugin Napari Assistant.
+Esta guía práctica cubre el flujo de trabajo completo para la segmentación de imágenes usando Napari y el plugin Napari Assistant.
 
 ## Objetivos de aprendizaje
 
 Al finalizar esta sección, serás capaz de:
-- Cargar y visualizar pilas de imágenes 3D en Napari
+- Cargar y visualizar imágenes en Napari
 - Usar el Asistente de Napari para segmentación guiada
 - Aplicar técnicas de preprocesamiento (eliminación de fondo, suavizado)
 - Realizar umbralización y binarización
@@ -45,7 +45,7 @@ Esto abre Napari con el panel del asistente de segmentación que te guía a trav
 
 ## Pasos del flujo de trabajo
 
-## Segmentación 3D en Napari
+## Segmentación en Napari
 
 En este ejercicio vamos a:
 
