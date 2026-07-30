@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/1316356303.svg)](https://doi.org/10.5281/zenodo.21693541)
+
 # Taller de Segmentación y Cuantificación de Imágenes
 
 Este repositorio contiene un taller práctico para aprender a construir *pipelines* de segmentación y cuantificación de imágenes de microscopía, comparando tres formas de trabajo complementarias.
@@ -36,5 +38,4 @@ Ver el archivo **`LICENSE`** para más detalles.
 
 ## Cómo citar este taller
 
-> **[Completar más adelante]**  
-> Autor/es, título del taller, institución, año, URL/DOI.
+Corbat, A. A. (2026). acorbat/workshop_segmentation_quantification: precourse (Version v0.1) [Computer software]. Zenodo. Taller de Fundamentos en Análisis de Bioimágenes (Formación de Formadores) 2026 (TFBIA(FdF)), Buenos Aires, Argentina. https://doi.org/10.5281/zenodo.21693542
