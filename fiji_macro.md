@@ -92,100 +92,124 @@ Analiza la tabla de *Results* exportada y responde las siguientes preguntas:
 
 ### Automatización final: generar un macro para correr sobre todas las imágenes
 
-Ya tienes un macro inicial en **`cuantificacion_cuerpos.ijm`**.
+Ya tienes un macro inicial armado (y sino en en **`cuantificacion_cuerpos.ijm`**).
 
 ![Fiji Macro Editor](assets/fiji_macro_editor.png)
 
-Ese macro funciona, pero está “atado” a una imagen específica porque usa nombres fijos como:
-- `selectImage("CEL2_nu-DAPI.tif")`
-- `selectImage("CEL2_pml-GFP.tif")`
-- `roiManager("Select", newArray(0,1,2,3,4,5,6,7))`
+Ese macro funciona para una imagen puntual, pero para usarlo en batch hay que volverlo dinámico.
 
-Para convertirlo en un flujo por lote (batch) hay que hacerlo **dinámico**.
+#### Sección 1 — Idea general: carpeta de entrada + carpeta de salida
 
-#### Qué cambiar del macro original
+La idea del batch es simple:
+- leer imágenes de una carpeta de entrada (`data`)
+- aplicar el pipeline automáticamente
+- escribir resultados en una carpeta de salida (`results`)
 
-1. **Nombres fijos de imagen → variables**
-   - En lugar de `CEL2_...`, construir los nombres a partir del prefijo de cada célula (`CEL1`, `CEL2`, `CEL3`, ...).
-2. **Selección fija de ROIs → medir todas las ROIs detectadas**
-   - Reemplazar `roiManager("Select", newArray(...))` por `roiManager("Deselect"); roiManager("Measure");`.
-3. **Una sola imagen → loop por carpeta**
-   - Recorrer la carpeta `data` y procesar cada archivo `*_nu-DAPI.tif`, buscando su par `*_pml-GFP.tif`.
-4. **Resultados manuales → guardado automático**
-   - Exportar un CSV por célula (por ejemplo `CEL1_results.csv`) en una carpeta de salida.
-
-#### Estructura recomendada del macro batch
+Por eso, el macro empieza con estas **tres líneas**:
 
 ```ijm
 inputDir = getDirectory("Choose input folder (data)");
 outputDir = getDirectory("Choose output folder");
 list = getFileList(inputDir);
+```
 
+Qué hace cada una:
+1. `inputDir`: solicita la carpeta con imágenes crudas.
+2. `outputDir`: solicita la carpeta donde guardar resultados.
+3. `list`: crea un listado con todos los archivos de `inputDir`.
+
+#### Sección 2 — Recorrer todos los archivos y aplicar el pipeline
+
+Luego creas un loop para iterar por toda la lista de archivos:
+
+```ijm
 for (i=0; i<list.length; i++) {
-    if (endsWith(list[i], "_nu-DAPI.tif")) {
-        id = replace(list[i], "_nu-DAPI.tif", "");
-        nucleiPath = inputDir + id + "_nu-DAPI.tif";
-        pmlPath    = inputDir + id + "_pml-GFP.tif";
-
-        if (!File.exists(pmlPath)) {
-            print("[SKIP] Falta canal PML para: " + id);
-            continue;
-        }
-
-        // Limpieza por iteración
-        run("Clear Results");
-        roiManager("Reset");
-
-        // Segment nuclei
-        open(nucleiPath);
-        nucleiTitle = getTitle();
-        selectWindow(nucleiTitle);
-        setAutoThreshold("Triangle dark no-reset");
-        setOption("BlackBackground", true);
-        run("Convert to Mask");
-        run("Options...", "iterations=2 count=1 black pad do=Open");
-        run("Analyze Particles...", "size=200-Infinity clear add");
-        close();
-
-        // Detect PML bodies
-        open(pmlPath);
-        pmlTitle = getTitle();
-        selectWindow(pmlTitle);
-        run("Find Maxima...", "prominence=10 output=[Single Points]");
-        run("Divide...", "value=255");
-
-        // Quantify PML per nuclei
-        run("Set Measurements...", "area mean min integrated redirect=None decimal=3");
-        roiManager("Deselect");
-        roiManager("Measure");
-
-        saveAs("Results", outputDir + id + "_results.csv");
-
-        // Cerrar ventanas abiertas en esta iteración
-        close();
-        roiManager("Reset");
-        run("Clear Results");
-    }
+    // insert pipeline
 }
 ```
 
-> Si vas a cambiar parámetros (threshold, tamaño en Analyze Particles, prominencia de Find Maxima), hazlo primero en una imagen de prueba y luego actualízalo en el bloque.
+Ese `for` es el “motor” del batch. Dentro irá todo el pipeline.
 
-#### Cómo ejecutar el proceso batch en Fiji
+#### Sección 3 — Encontrar imágenes DAPI, extraer el ID celular y validar el par PML
 
-**Opción A (recomendada para este caso):**
+No queremos correr el pipeline sobre cualquier archivo, sino iniciar una iteración solo cuando encontramos una imagen de núcleos, en este caso `_nu-DAPI.tif` (por eso es importante seguir una convención de nombres de archivo):
+
+```ijm
+if (endsWith(list[i], "_nu-DAPI.tif")) {
+    id = replace(list[i], "_nu-DAPI.tif", "");
+    nucleiPath = inputDir + id + "_nu-DAPI.tif";
+    pmlPath    = inputDir + id + "_pml-GFP.tif";
+
+    if (!File.exists(pmlPath)) {
+        print("[SKIP] Falta canal PML para: " + id);
+        continue;
+    }
+
+    // insert pipeline for this cell id
+}
+```
+
+- `endsWith(...)` detecta que el archivo actual es DAPI.
+- `replace(...)` elimina el sufijo y recupera el identificador (`CEL1`, `CEL2`, ...).
+- Con ese `id` construyes automáticamente las rutas de DAPI y PML.
+
+> **💡 Pro-tip (edge case):** puede existir `CELX_nu-DAPI.tif` sin `CELX_pml-GFP.tif`. En ese caso usa `print("[SKIP] ...")` + `continue;` para advertir y seguir con la siguiente célula sin detener todo el batch.
+
+#### Sección 4 — Agregar cada módulo del pipeline al macro
+
+Una vez identificada la célula y validados sus archivos, agregas cada módulo del pipeline dentro del loop.
+
+**Módulo A: limpieza por iteración**
+```ijm
+run("Clear Results");
+roiManager("Reset");
+```
+
+**Módulo B: segmentación de núcleos (DAPI)**
+```ijm
+open(nucleiPath);
+setAutoThreshold("Triangle dark no-reset");
+setOption("BlackBackground", true);
+run("Convert to Mask");
+run("Options...", "iterations=2 count=1 black pad do=Open");
+run("Analyze Particles...", "size=200-Infinity clear add");
+close();
+```
+
+**Módulo C: detección de PML (Find Maxima)**
+```ijm
+open(pmlPath);
+run("Find Maxima...", "prominence=10 output=[Single Points]");
+run("Divide...", "value=255");
+```
+
+**Módulo D: cuantificación por ROIs nucleares**
+```ijm
+run("Set Measurements...", "area mean min integrated redirect=None decimal=3");
+roiManager("Deselect");
+roiManager("Measure");
+```
+
+**Módulo E: guardado y cierre**
+```ijm
+saveAs("Results", outputDir + id + "_results.csv");
+close();
+roiManager("Reset");
+run("Clear Results");
+```
+
+Con esto, el macro deja de depender de `CEL2_...` y puede procesar automáticamente todas las imágenes `CEL{N}_{stain}.tif`.
+
+#### Sección 5 — Cómo ejecutar el batch en Fiji
+
 1. Guarda el macro como `cuantificacion_cuerpos_batch.ijm`.
-2. En FIJI: `Plugins > Macros > Run...`.
+2. En FIJI, ve a `Plugins > Macros > Run...`.
 3. Selecciona el archivo `.ijm`.
-4. El macro te pedirá:
-   - carpeta de entrada (`data`)
-   - carpeta de salida (por ejemplo `results/`)
-5. Espera a que termine y revisa los CSV generados.
-
-**Opción B:** `Process > Batch > Macro...` (útil para macros muy estandarizados de un solo input/output por archivo, menos flexible cuando hay emparejado de canales).
+4. Elige carpeta de entrada (`data`) y carpeta de salida (`results`).
+5. Verifica que se genere un CSV por célula (`CEL1_results.csv`, `CEL2_results.csv`, etc.).
 
 #### Validación rápida al terminar
 
-- Verifica que exista un CSV por cada célula (`CEL1`, `CEL2`, `CEL3`, ...).
-- Abre 1–2 CSV y confirma que el número de filas coincida con la cantidad de núcleos detectados.
+- Revisa que exista un CSV por cada célula esperada.
+- Abre 1–2 CSV y confirma que el número de filas coincida con los núcleos detectados.
 - Si hay sobre/infra detección, ajusta `size=` o `prominence=` y vuelve a correr.
