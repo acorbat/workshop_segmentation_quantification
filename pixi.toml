@@ -12,6 +12,15 @@ setup = { depends-on = ["install-assistant", "download-data"] }
 download-data = """
 curl -L https://zenodo.org/records/15175309/files/Nuclei_no_avg.nd2?download=1 --output data/nuclei.nd2 --create-dirs --skip-existing
 curl -L https://zenodo.org/records/15175309/files/Tissue_no_avg.nd2?download=1 --output data/tissue.nd2 --create-dirs --skip-existing
+curl -L "https://drive.usercontent.google.com/download?id=1do6JdOqgrBH_YFjpMYkPSEN9BFgl0iwD&confirm=xxx" --output data/CEL3_pml-GFP.tif --create-dirs --skip-existing
+curl -L "https://drive.usercontent.google.com/download?id=1fVEGYjcTYcKy2Jah1pEL3YrHQy40d1LG&confirm=xxx" --output data/CEL3_ACTINA-texasRed.tif --create-dirs --skip-existing
+curl -L "https://drive.usercontent.google.com/download?id=1w66BYKIZmauK1oXNnmR1MjIwbHXwt_0g&confirm=xxx" --output data/CEL1_pml-GFP.tif --create-dirs --skip-existing
+curl -L "https://drive.usercontent.google.com/download?id=1pZoN5Mj5AOm4PgrdBoU1LvBB2sAA8IJ1&confirm=xxx" --output data/CEL3_nu-DAPI.tif --create-dirs --skip-existing
+curl -L "https://drive.usercontent.google.com/download?id=1gG3FULwuE7hkFAtMgnVOX8G4HREf6z74&confirm=xxx" --output data/CEL2_nu-DAPI.tif --create-dirs --skip-existing
+curl -L "https://drive.usercontent.google.com/download?id=1t8woPQEUYx2ZY13IJd_vPDrGNTtpxosT&confirm=xxx" --output data/CEL2_pml-GFP.tif --create-dirs --skip-existing
+curl -L "https://drive.usercontent.google.com/download?id=17w81LFVYk_FKdc0bdJ3nVJ445zWqZomp&confirm=xxx" --output data/CEL1_ACTINA-texasRed.tif --create-dirs --skip-existing
+curl -L "https://drive.usercontent.google.com/download?id=1Hr8Im-2rqZjp-b1phL0kdt4EY0Ugdq6j&confirm=xxx" --output data/CEL2_ACTINA-texasRed.tif --create-dirs --skip-existing
+curl -L "https://drive.usercontent.google.com/download?id=1xdj-hJtpUQDA8giCpjUkvtORhBws3tie&confirm=xxx" --output data/CEL1_nu-DAPI.tif --create-dirs --skip-existing
 """
 
 [feature.assistant.dependencies]
