@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/1316356303.svg)](https://doi.org/10.5281/zenodo.21693541)
+[![DOI](https://img.shields.io/badge/DOI-10.5281%2FZenodo.21693541-blue.svg)](https://doi.org/10.5281/zenodo.21693541)
 
 # Taller de Segmentación y Cuantificación de Imágenes
 
