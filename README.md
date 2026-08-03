@@ -4,6 +4,31 @@
 
 Este repositorio contiene un taller práctico para aprender a construir *pipelines* de segmentación y cuantificación de imágenes de microscopía, comparando tres formas de trabajo complementarias.
 
+## Instalación y puesta en marcha
+
+1. **Clonar el repositorio**
+
+   ```bash
+   git clone https://github.com/acorbat/workshop_segmentation_quantification.git
+   cd workshop_segmentation_quantification
+   ```
+
+2. **Instalar [Pixi](https://pixi.sh/latest/)** (si no lo tienes)
+
+3. **Preparar el entorno y descargar los datos**
+
+   ```bash
+   pixi run setup
+   ```
+
+   Este comando ejecuta las tareas de instalación del entorno (`assistant`) y descarga los archivos necesarios en la carpeta `data/`.
+
+4. **(Opcional) Abrir JupyterLab en el entorno del taller**
+
+   ```bash
+   pixi run --environment assistant jupyter lab
+   ```
+
 ## Estructura del taller
 
 El taller incluye **cuatro ejercicios**:
