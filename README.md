@@ -34,16 +34,23 @@ Este repositorio contiene un taller práctico para aprender a construir *pipelin
 El taller incluye **cuatro ejercicios**:
 
 1. **Segmentación y cuantificación en Fiji**  
-   Guía paso a paso en **`fiji_segmentation.md`**.
+   Guía paso a paso en [**`fiji_segmentation.md`**](fiji_segmentation.md).
 
-2. **Segmentación y cuantificación en Jupyter Notebook** (análogo al ejercicio anterior, pero sobre una imagen diferente)  
-   Disponible en **`segmentation_quantification.ipynb`** para comparar metodologías y resultados con un flujo reproducible en Python.
+2. **Segmentación y cuantificación en Jupyter Notebook** (análogo al ejercicio anterior, pero sobre una imagen diferente)
+   hay que arrancar jupyter lab con
+   
+   ```
+   pixi run -e assistant jupyter lab
+   
+   ```
+   
+   Y luego abrir **`segmentation_quantification.ipynb`** para comparar metodologías y resultados con un flujo reproducible en Python.
 
 3. **Cuantificación de PML por núcleo en Fiji + Macro Recorder**  
-   Ejercicio guiado en **`fiji_macro.md`** para registrar todo el flujo con el Recorder y preparar la automatización por lote sobre archivos `CEL{N}_{stain}.tif`.
+   Ejercicio guiado en [**`fiji_macro.md`**](fiji_macro.md) para registrar todo el flujo con el Recorder y preparar la automatización por lote sobre archivos `CEL{N}_{stain}.tif`.
 
-4. **Segmentación con Napari Assistant (GUI)**  
-   Ejercicio guiado con interfaz gráfica para diseñar el pipeline y luego **exportar un notebook** con los pasos aplicados. Ver **`napari_segmentation.md`**.
+4. **Segmentación con Napari Assistant (GUI)**
+   Seguir lo descripto en [**`napari_segmentation.md`**](napari_segmentation.md). Ejercicio guiado con interfaz gráfica para diseñar el pipeline y luego **exportar un notebook** con los pasos aplicados.
 
 ## Tres “mapas trazados” para ir de una isla a otra
 
